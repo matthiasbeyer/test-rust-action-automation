@@ -1,0 +1,30 @@
+name: "Update flake input (slow)"
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  schedule:
+    # On 4:25 on day-of-month 1 and 14
+    - cron:  '25 4 1,14 * *'
+
+jobs:
+  lockfile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.0.2
+      - name: Install Nix
+        uses: cachix/install-nix-action@v17
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Update flake.lock
+        uses: DeterminateSystems/update-flake-lock@v14
+        with:
+          pr-title: "Update flake inputs: flake-utils, crane, rust-overlay" # Title of PR to be created
+          inputs:
+            - flake-utils
+            - crane
+            - rust-overlay
+
+
