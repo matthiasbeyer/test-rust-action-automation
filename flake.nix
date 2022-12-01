@@ -17,9 +17,19 @@
         flake-utils.follows = "flake-utils";
       };
     };
+
+    cargo-changelog = {
+      url = "github:matthiasbeyer/cargo-changelog";
+      inputs = {
+        crane.follows = "crane";
+        flake-inputs.follows = "flake-utils";
+        nixpkgs.follows = "nixpkgs";
+        rust-overlay.follows = "rust-overlay";
+      };
+    };
   };
 
-  outputs = { self, nixpkgs, crane, flake-utils, rust-overlay, ... }:
+  outputs = { self, nixpkgs, crane, flake-utils, rust-overlay, cargo-changelog, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -48,6 +58,10 @@
         checks = {
           inherit binary;
 
+          cargo-changelog-verify-metadata = pkgs.writeScriptBin "cargo-changelog-verify-metadata" ''
+            ${cargo-changelog}/bin/cargo-changelog verify-metadata
+          '';
+
           binary-clippy = craneLib.cargoClippy {
             inherit cargoArtifacts src;
             cargoClippyExtraArgs = "-- --deny warnings";
@@ -72,6 +86,7 @@
         devShells.binary = pkgs.mkShell {
           nativeBuildInputs = [
             rustTarget
+            cargo-changelog.outputs.packages."${system}".default
           ];
         };
       }
