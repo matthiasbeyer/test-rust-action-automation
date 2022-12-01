@@ -21,5 +21,7 @@ jobs:
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@v14
         with:
-          pr-title: "Update flake input: nixpkgs" # Title of PR to be created
-          inputs: nixpkgs
+          pr-title: "Update flake input: nixpkgs, cargo-changelog" # Title of PR to be created
+          inputs:
+            - nixpkgs
+            - cargo-changelog
