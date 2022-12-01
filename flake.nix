@@ -86,6 +86,7 @@
         devShells.binary = pkgs.mkShell {
           nativeBuildInputs = [
             rustTarget
+            cargo-changelog.outputs.packages."${system}".default
           ];
         };
       }
