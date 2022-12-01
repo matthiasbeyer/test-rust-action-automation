@@ -87,6 +87,7 @@
           nativeBuildInputs = [
             rustTarget
             cargo-changelog.outputs.packages."${system}".default
+            pkgs.gitlint
           ];
         };
       }
