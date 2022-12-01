@@ -65,7 +65,7 @@ jobs:
           git add CHANGELOG.md
           git commit -sm "Release changelog for ${{ inputs.major }}.${{ inputs.minor }}.0"
 
-      - uses: peter-evans/create-pull-request
+      - uses: peter-evans/create-pull-request@v4.2
         with:
           draft: true
           branch: release-${{ inputs.major }}.${{ inputs.minor }}.0-changelog
